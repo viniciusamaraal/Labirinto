@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Labirinto.TAD;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Labirinto
             string[] tamanhoMatriz;
             string linha;
             int nLinhaMapa = 0;
+            int qtdPremios = 0;
+            int xPos = 0, yPos = 0;
 
             TAD.Labirinto labirinto;
 
@@ -33,14 +36,22 @@ namespace Labirinto
                 while(!String.IsNullOrEmpty(linha))
                 {
                     for (int i = 0; i < linha.Length; i++)
+                    {
                         labirinto.IncluirPosicao(nLinhaMapa, i, linha[i]); // nLinhaMapa: eixo x da matriz; i: eixo y da matriz; linha[i]: caracter lido que representará o tipo do campo (buraco, espaço livre ou prêmio) para as coordenadas definidas
+
+                        if (linha[i] == 'o')
+                        {
+                            xPos = nLinhaMapa;
+                            yPos = i;
+                        }
+                    }
 
                     nLinhaMapa++; // Incrementa o número de linhas da matriz para que uma nova linha do arquivo seja lida
                     linha = leituraArquivo.ReadLine(); // Lê a próxima linha do arquivo
                 }
             }
 
-            labirinto.ImprimirMapa();
+            // labirinto.PercorrerMapa();
         }
     }
 }
