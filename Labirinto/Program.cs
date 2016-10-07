@@ -51,7 +51,8 @@ namespace Labirinto
                 }
             }
 
-            // labirinto.PercorrerMapa();
+            labirinto.ImprimirMapa();
+            labirinto.PercorrerMapa();
         }
     }
 }

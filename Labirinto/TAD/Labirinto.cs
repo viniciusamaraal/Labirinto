@@ -9,12 +9,10 @@ namespace Labirinto.TAD
 {
     public class Labirinto
     {
-        Posicao[,] Mapa { get; set; }
+        Posicao[,] Mapa;
         CPilha Caminho;
         int xPosAtual;
         int yPosAtual;
-        int xPosAnterior; // TODO: repensar essa bagaça
-        int yPosAnterior; // TODO: repensar essa bagaça
         int qtdPremios;
 
         public Labirinto(int nLinhas, int nColunas)
@@ -25,7 +23,7 @@ namespace Labirinto.TAD
 
         public void IncluirPosicao(int xPos, int yPos, char tipoCampo)
         {
-            Mapa[xPos, yPos] = new Posicao(tipoCampo);
+            Mapa[xPos, yPos] = new Posicao(tipoCampo, xPos, yPos);
 
             if (tipoCampo == 'o')
             {
@@ -43,7 +41,7 @@ namespace Labirinto.TAD
         private bool PodeMover(int xPos, int yPos)
         {
             // Se a posição nunca foi visitada e se trata de um espaço vazio ou espaço com prêmio, pode-se mover o robô para essa posição
-            return !Mapa[xPos, yPos].visitado && (Mapa[xPos, yPos].tipo == ' ' || Mapa[xPos, yPos].tipo == 'p'); 
+            return !Mapa[xPos, yPos].visitado && (Mapa[yPos, xPos].tipo == ' ' || Mapa[yPos, xPos].tipo == 'p'); 
         }
 
         public void PercorrerMapa()
@@ -56,37 +54,42 @@ namespace Labirinto.TAD
 
                 if (PodeMover(xPosAtual - 1, yPosAtual)) // Pode mover para a esquerda?
                 {
-                    xPosAnterior = xPosAtual;
-                    xPosAtual = xPosAtual - 1; // Redefine a posição atual
+                    xPosAtual--; // Redefine a posição atual
+                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado 
                     Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true;
+                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
-                else if (PodeMover(xPosAtual, yPosAtual + 1)) // Se não pode mover para a esquerda, pode mover para a cima?
+                else if (PodeMover(xPosAtual, yPosAtual - 1)) // Se não pode mover para a esquerda, pode mover para a cima?
                 {
-                    yPosAnterior = yPosAtual;
-                    yPosAtual = yPosAtual + 1; // Redefine a posição atual
+                    yPosAtual--; // Redefine a posição atual
+                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
                     Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true;
+                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
                 else if (PodeMover(xPosAtual + 1, yPosAtual)) // Se não pode mover para cima, pode mover para a direita?
                 {
-                    xPosAnterior = xPosAtual;
-                    xPosAtual = xPosAtual + 1; // Redefine a posição atual
+                    xPosAtual++; // Redefine a posição atual
+                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
                     Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true;
+                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
-                else if (PodeMover(xPosAtual, yPosAtual - 1)) // Se não pode mover para a direita, pode mover para baixo?
+                else if (PodeMover(xPosAtual, yPosAtual + 1)) // Se não pode mover para a direita, pode mover para baixo?
                 {
-                    yPosAnterior = yPosAtual;
-                    yPosAtual = yPosAtual - 1; // Redefine a posição atual
+                    yPosAtual++; // Redefine a posição atual
+                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
                     Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true;
+                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
                 else // Se não pode mover para lugar algum, volta para a posicao anterior
                 {
-                    // TODO: pensar como voltar para as coordenadas da posição anterior
-
                     Caminho.Desempilha();
+
+                    if (!Caminho.Vazia())
+                    {
+                        Posicao topo = (Posicao)Caminho.Peek();
+                        xPosAtual = topo.xPos;
+                        yPosAtual = topo.yPos;
+                    }
                 }
 
                 // Se a posição nunca havia sido visitada e nela foi encontrado um prêmio incrementa-se a quantidade de prêmios
@@ -96,7 +99,22 @@ namespace Labirinto.TAD
                 ImprimirMovimento('o'); // Imprime o "robô" na nova posição encontrada
 
                 novoMovimento = false; // Reseta o indicador de novo movimento
-                Thread.Sleep(1000); // Faz o programa esperar por um segundo para andar novamente (para dar tempo de ver os movimentos sendo executados)
+                Thread.Sleep(250); // Faz o programa esperar por x milisegundos antes de definir o próximo movimento (apenas para dar tempo de ver os movimentos sendo executados)
+            }
+
+            Console.WriteLine("\n\n\nVisitei todos os espaços possíveis, capturei " + qtdPremios + " prêmios e retornei ao ponto de partida! =)");
+            Console.WriteLine("Pressione qualquer tecla para finalizar...");
+            Console.ReadKey();
+        }
+
+        public void ImprimirMapa()
+        {
+            for (int i = 0; i<Mapa.GetLength(0); i++)
+            {
+                for (int j = 0; j<Mapa.GetLength(1); j++)
+                    Console.Write(Mapa[i, j].tipo);
+        
+                Console.WriteLine();
             }
         }
 

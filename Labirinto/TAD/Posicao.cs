@@ -10,10 +10,14 @@ namespace Labirinto.TAD
     {
         public char tipo { get; set; }
         public bool visitado { get; set; }
+        public int xPos { get; set; }
+        public int yPos { get; set; }
 
-        public Posicao(char tipoEntrada)
+        public Posicao(char tipoEntrada, int xPos, int yPos)
         {
-            tipo = tipoEntrada;
+            this.tipo = tipoEntrada;
+            this.xPos = xPos;
+            this.yPos = yPos;
         }
     }
 }
