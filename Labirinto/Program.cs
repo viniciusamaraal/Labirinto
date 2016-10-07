@@ -53,6 +53,9 @@ namespace Labirinto
 
             labirinto.ImprimirMapa();
             labirinto.PercorrerMapa();
+
+            Console.WriteLine("Pressione qualquer tecla para finalizar...");
+            Console.ReadKey();
         }
     }
 }

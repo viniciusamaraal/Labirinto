@@ -103,8 +103,6 @@ namespace Labirinto.TAD
             }
 
             Console.WriteLine("\n\n\nVisitei todos os espaços possíveis, capturei " + qtdPremios + " prêmios e retornei ao ponto de partida! =)");
-            Console.WriteLine("Pressione qualquer tecla para finalizar...");
-            Console.ReadKey();
         }
 
         public void ImprimirMapa()
