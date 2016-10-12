@@ -21,15 +21,15 @@ namespace Labirinto.TAD
             Caminho = new CPilha();
         }
 
-        public void IncluirPosicao(int xPos, int yPos, char tipoCampo)
+        public void IncluirPosicao(int linha, int coluna, char tipoCampo)
         {
-            Mapa[xPos, yPos] = new Posicao(tipoCampo, xPos, yPos);
+            Mapa[linha, coluna] = new Posicao(tipoCampo, linha, coluna);
 
             if (tipoCampo == 'o')
             {
-                Caminho.Empilha(Mapa[xPos, yPos]);
-                linhaAtual = xPos;
-                colunaAtual = yPos;
+                Caminho.Empilha(Mapa[linha, coluna]);
+                linhaAtual = linha;
+                colunaAtual = coluna;
             }
         }
 

@@ -17,7 +17,7 @@ namespace Labirinto
             string linha;
             int nLinhaMapa = 0;
             int qtdPremios = 0;
-            int xPos = 0, yPos = 0;
+            int nLinha = 0, nColuna = 0;
 
             TAD.Labirinto labirinto;
 
@@ -41,8 +41,8 @@ namespace Labirinto
 
                         if (linha[i] == 'o')
                         {
-                            xPos = nLinhaMapa;
-                            yPos = i;
+                            nLinha = nLinhaMapa;
+                            nColuna = i;
                         }
                     }
 
