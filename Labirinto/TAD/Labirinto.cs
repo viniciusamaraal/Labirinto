@@ -11,8 +11,8 @@ namespace Labirinto.TAD
     {
         Posicao[,] Mapa;
         CPilha Caminho;
-        int xPosAtual;
-        int yPosAtual;
+        int colunaAtual;
+        int linhaAtual;
         int qtdPremios;
 
         public Labirinto(int nLinhas, int nColunas)
@@ -28,20 +28,20 @@ namespace Labirinto.TAD
             if (tipoCampo == 'o')
             {
                 Caminho.Empilha(Mapa[xPos, yPos]);
-                xPosAtual = xPos;
-                yPosAtual = yPos;
+                linhaAtual = xPos;
+                colunaAtual = yPos;
             }
         }
 
-        private Posicao BuscarPosicao(int xPos, int yPos)
+        private Posicao BuscarPosicao(int linha, int coluna)
         {
-            return Mapa[xPos, yPos];
+            return Mapa[linha, coluna];
         }
 
-        private bool PodeMover(int xPos, int yPos)
+        private bool PodeMover(int linha, int coluna)
         {
             // Se a posição nunca foi visitada e se trata de um espaço vazio ou espaço com prêmio, pode-se mover o robô para essa posição
-            return !Mapa[xPos, yPos].visitado && (Mapa[yPos, xPos].tipo == ' ' || Mapa[yPos, xPos].tipo == 'p'); 
+            return !Mapa[linha, coluna].visitado && (Mapa[linha, coluna].tipo == ' ' || Mapa[linha, coluna].tipo == 'p'); 
         }
 
         public void PercorrerMapa()
@@ -52,32 +52,32 @@ namespace Labirinto.TAD
             {
                 ImprimirMovimento(' ');
 
-                if (PodeMover(xPosAtual - 1, yPosAtual)) // Pode mover para a esquerda?
+                if (PodeMover(linhaAtual - 1, colunaAtual)) // Pode mover para cima?
                 {
-                    xPosAtual--; // Redefine a posição atual
-                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado 
-                    Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
+                    linhaAtual--; // Redefine a posição atual
+                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado 
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
                     novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
-                else if (PodeMover(xPosAtual, yPosAtual - 1)) // Se não pode mover para a esquerda, pode mover para a cima?
+                else if (PodeMover(linhaAtual, colunaAtual - 1)) // Se não pode mover para a cima, pode mover para a esquerda?
                 {
-                    yPosAtual--; // Redefine a posição atual
-                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
+                    colunaAtual--; // Redefine a posição atual
+                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
                     novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
-                else if (PodeMover(xPosAtual + 1, yPosAtual)) // Se não pode mover para cima, pode mover para a direita?
+                else if (PodeMover(linhaAtual + 1, colunaAtual)) // Se não pode mover para esquerda, pode mover para baixo?
                 {
-                    xPosAtual++; // Redefine a posição atual
-                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
+                    linhaAtual++; // Redefine a posição atual
+                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
                     novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
-                else if (PodeMover(xPosAtual, yPosAtual + 1)) // Se não pode mover para a direita, pode mover para baixo?
+                else if (PodeMover(linhaAtual, colunaAtual + 1)) // Se não pode mover para a baixo, pode mover para direita?
                 {
-                    yPosAtual++; // Redefine a posição atual
-                    Mapa[xPosAtual, yPosAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[xPosAtual, yPosAtual]); // Empilha a nova posição encontrada
+                    colunaAtual++; // Redefine a posição atual
+                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
                     novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
                 }
                 else // Se não pode mover para lugar algum, volta para a posicao anterior
@@ -87,13 +87,13 @@ namespace Labirinto.TAD
                     if (!Caminho.Vazia())
                     {
                         Posicao topo = (Posicao)Caminho.Peek();
-                        xPosAtual = topo.xPos;
-                        yPosAtual = topo.yPos;
+                        linhaAtual = topo.linhaPos;
+                        colunaAtual = topo.colunaPos;
                     }
                 }
 
                 // Se a posição nunca havia sido visitada e nela foi encontrado um prêmio incrementa-se a quantidade de prêmios
-                if (novoMovimento && Mapa[xPosAtual, yPosAtual].tipo == 'p') 
+                if (novoMovimento && Mapa[linhaAtual, colunaAtual].tipo == 'p') 
                     qtdPremios++;
 
                 ImprimirMovimento('o'); // Imprime o "robô" na nova posição encontrada
@@ -118,7 +118,7 @@ namespace Labirinto.TAD
 
         private void ImprimirMovimento(char caracter)
         {
-            Console.SetCursorPosition(xPosAtual, yPosAtual); // Define a posição do cursor na tela onde o caracter será impresso
+            Console.SetCursorPosition(colunaAtual, linhaAtual); // Define a posição do cursor na tela onde o caracter será impresso
             Console.Write(caracter);
         }
     }
