@@ -8,16 +8,16 @@ namespace Labirinto.TAD
 {
     public class Posicao
     {
-        public char tipo { get; set; }
-        public bool visitado { get; set; }
-        public int linhaPos { get; set; }
-        public int colunaPos { get; set; }
+        public char tipo;
+        public bool visitado;
+        public int linhaPos;
+        public int colunaPos;
 
-        public Posicao(char tipoEntrada, int linhaPos, int colunaPos)
+        public Posicao(char tipoEntrada, int linhaPosEntrada, int colunaPosEntrada)
         {
-            this.tipo = tipoEntrada;
-            this.linhaPos = linhaPos;
-            this.colunaPos = colunaPos;
+            tipo = tipoEntrada;
+            linhaPos = linhaPosEntrada;
+            colunaPos = colunaPosEntrada;
         }
     }
 }

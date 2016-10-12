@@ -15,9 +15,9 @@ namespace Labirinto.TAD
         int linhaAtual;
         int qtdPremios;
 
-        public Labirinto(int nLinhas, int nColunas)
+        public Labirinto(int nLinha, int nColuna)
         {
-            Mapa = new Posicao[nLinhas, nColunas];
+            Mapa = new Posicao[nLinha, nColuna];
             Caminho = new CPilha();
         }
 
@@ -61,24 +61,24 @@ namespace Labirinto.TAD
                 }
                 else if (PodeMover(linhaAtual, colunaAtual - 1)) // Se não pode mover para a cima, pode mover para a esquerda?
                 {
-                    colunaAtual--; // Redefine a posição atual
-                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
+                    colunaAtual--; 
+                    Mapa[linhaAtual, colunaAtual].visitado = true; 
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); 
+                    novoMovimento = true; 
                 }
                 else if (PodeMover(linhaAtual + 1, colunaAtual)) // Se não pode mover para esquerda, pode mover para baixo?
                 {
-                    linhaAtual++; // Redefine a posição atual
-                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
+                    linhaAtual++; 
+                    Mapa[linhaAtual, colunaAtual].visitado = true; 
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]);
+                    novoMovimento = true;
                 }
                 else if (PodeMover(linhaAtual, colunaAtual + 1)) // Se não pode mover para a baixo, pode mover para direita?
                 {
-                    colunaAtual++; // Redefine a posição atual
-                    Mapa[linhaAtual, colunaAtual].visitado = true; // Registra que o campo foi visitado
-                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]); // Empilha a nova posição encontrada
-                    novoMovimento = true; // Identifica que tratou-se de um novo movimento e não de um recuo (desempilhamento)
+                    colunaAtual++; 
+                    Mapa[linhaAtual, colunaAtual].visitado = true; 
+                    Caminho.Empilha(Mapa[linhaAtual, colunaAtual]);
+                    novoMovimento = true; 
                 }
                 else // Se não pode mover para lugar algum, volta para a posicao anterior
                 {
